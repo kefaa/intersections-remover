@@ -1,16 +1,17 @@
-#include <iostream>
-#include <vector>
+#include "entities.h"
 #include <fstream>
 #include <cassert>
 
+namespace parser {
+
 template<typename T>
-T ParseSingle(std::ifstream& in) {
+T ParseSingle(std::ifstream &in) {
   T result;
-  in.read((char*)&result, 4);
+  in.read((char *) &result, 4);
   return result;
 }
 
-Point ParsePoint(std::ifstream& in) {
+Point ParsePoint(std::ifstream &in) {
   const auto x = ParseSingle<float>(in);
   const auto y = ParseSingle<float>(in);
   const auto z = ParseSingle<float>(in);
@@ -25,7 +26,7 @@ Triangle ParseTriangle(std::ifstream& in) {
   return {a, b, c, norm};
 }
 
-Object Parse(const std::string& filename) {
+Object Parse(const std::string &filename) {
   std::ifstream in = std::ifstream(filename.c_str(), std::ios::in | std::ios::binary);
   assert(in);
 
@@ -41,3 +42,5 @@ Object Parse(const std::string& filename) {
   }
   return result;
 }
+
+} // namespace parser

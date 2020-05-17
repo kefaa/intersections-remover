@@ -1,7 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <fstream>
-#include <cassert>
 
 struct Point {
   double x;
