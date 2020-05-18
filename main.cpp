@@ -1,7 +1,8 @@
 #include "parser.h"
 
 int main() {
-  const auto object = parser::Parse("cube.stl");
+  auto object = parser::Parse("cube.stl");
   object.Print();
+  object.Bucketize();
   return 0;
 }
