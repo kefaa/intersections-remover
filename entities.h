@@ -15,6 +15,7 @@ struct Point {
 };
 
 std::ostream& operator << (std::ostream& out, const Point& point);
+
 struct Edge {
   size_t from;
   size_t to;
@@ -37,6 +38,9 @@ std::ostream& operator << (std::ostream& out, const Triangle& triangle);
 struct Line {
   Point p0;
   Point dir;
+
+  Point Get(const double t) const;
+  Point IntersectWith(const Line& other) const;
 };
 
 Point SolveEquation(double a1, double b1, double c1, double a2, double b2, double c2);
