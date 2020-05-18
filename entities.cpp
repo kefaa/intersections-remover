@@ -3,7 +3,6 @@
 #include <limits>
 #include <cassert>
 #include <set>
-#include <map>
 #include <tuple>
 #include <cmath>
 
@@ -40,6 +39,7 @@ Edge& Edge::Normalize() {
   }
   return *this;
 }
+
 bool Edge::operator < (const Edge& rhs) const {
   return std::tie(from, to) < std::tie(rhs.from, rhs.to);
 }
@@ -59,6 +59,31 @@ Point SolveEquation(double a1, double b1, double c1, double a2, double b2, doubl
       (a1 * c2 - a2 * c1) / (a2 * b1 - a1 * b2),
       0.0
   };
+}
+
+Point Line::Get(const double t) const {
+  return {
+    p0.x + t * dir.x,
+      p0.y + t * dir.y,
+      p0.z + t * dir.z,
+  };
+}
+
+Point Line::IntersectWith(const Line& other) const {
+  const auto direction = dir.Product(other.dir);
+  if (fabs(direction.z) > kEps) {
+    const auto pt = SolveEquation(
+        dir.x, -other.dir.x, p0.x - other.p0.x, dir.y, -other.dir.y, p0.y - other.p0.y);
+    return Get(pt.x);
+  }
+  if (fabs(direction.y) > kEps) {
+    const auto pt = SolveEquation(
+        dir.x, -other.dir.x, p0.x - other.p0.x, dir.z, -other.dir.z, p0.z - other.p0.z);
+    return Get(pt.x);
+  }
+  const auto pt = SolveEquation(
+      dir.y, -other.dir.y, p0.y - other.p0.y,  dir.z, -other.dir.z, p0.z - other.p0.z);
+  return Get(pt.x);
 }
 
 int Plane::GetSide(const Point& p) const {
